@@ -14,6 +14,10 @@ const {
   deleteTask,
 } = require("../controllers/task.controllers"); //importo las funciones que voy a utilizar en mis routes. desde el archivo task.controllers.js
 
+const {
+  getAllTasks2,
+  createTask2,
+} = require("../controllers/task2.controllers"); //importo las funciones que voy a utilizar en mis routes. desde el archivo task.controllers.js
 /* router.get('/tasks', async (req, res) => { //creo una funcion que va a escuchar la url /
     const result = await pool.query("SELECT NOW()") //utilizo esta funcion, para ver si se conecta a la base de datos, con las credenciales dadas
     console.log(result)
@@ -21,10 +25,12 @@ const {
 }); */
 
 router.get("/tasks", getAllTasks);
+router.get("/tasks2", getAllTasks2);
 
 router.get("/tasks/:id", getTask);
 
 router.post("/tasks", createTask);
+router.post("/tasks2", createTask2);
 
 router.delete("/tasks/:id", deleteTask);
 

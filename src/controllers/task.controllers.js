@@ -11,6 +11,7 @@ const getAllTasks = async (req, res, next) => {
     next(error);
   }
 };
+//---------------------------------------------
 
 //---------------------------------------------
 
@@ -38,14 +39,14 @@ const getTask = async (req, res, next) => {
 //---------------------------------------------
 
 const createTask = async (req, res, next) => {
-  const { title, description } = req.body; //extraigo los datos que se envian desde el frontend
+  const { title, description, prioridad, prioridad2 } = req.body; //extraigo los datos que se envian desde el frontend
   //El "req.body" es un objeto que viene desde el frontend, y lo que se va a guardar en la base de datos es el "title" y el "description"
 
   try {
     const result = await pool.query(
-      "INSERT INTO task (title, description) VALUES ($1, $2) RETURNING *", //utilizo esta funcion, para guardar los datos en la base de datos
+      "INSERT INTO task (title, description, prioridad, prioridad2) VALUES ($1, $2, $3, $4) RETURNING *", //utilizo esta funcion, para guardar los datos en la base de datos
       //el task es el nombre de la tabla, y los datos que se van a guardar son el "title" y el "description"
-      [title, description] //le paso los datos que quiero guardar en $1 y $2
+      [title, description, prioridad, prioridad2] //le paso los datos que quiero guardar en $1 y $2
     );
     res.json(result.rows[0]); //envio un json con los datos que guarde
   } catch (error) {
@@ -53,6 +54,8 @@ const createTask = async (req, res, next) => {
     next(error);
   }
 };
+
+//---------------------------------------------
 
 //---------------------------------------------
 
