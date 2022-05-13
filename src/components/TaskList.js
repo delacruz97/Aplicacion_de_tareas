@@ -2,6 +2,8 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Button, Card, CardContent, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom"; //en versione precedente era solo useHistory
+import "../App.css";
+import TareaTerminada from "./TareaTerminada";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
@@ -12,7 +14,7 @@ export default function TaskList() {
     const data = await res.json();
     /* console.log(data); */
     setTasks(data);
-  };
+  }; // para eliminar una tarea
 
   const handleDelete = async (id) => {
     try {
@@ -23,16 +25,14 @@ export default function TaskList() {
     } catch (error) {
       console.log(error);
     }
-  }; // para eliminar una tarea
-
-  //el useEffect no me permite escribir un async function
+  }; //el useEffect no me permite escribir un async function
   useEffect(() => {
     loadTasks();
   }, []); // espera que se ejecute una sola vez
 
   return (
     <>
-      <h1>Task List</h1>
+      <h2>Task List</h2>
       {tasks.map((task) => (
         <Card
           style={{
@@ -69,8 +69,12 @@ export default function TaskList() {
               >
                 Delete
               </Button>
+              <TareaTerminada />
             </div>
           </CardContent>
+          <div className="prioridad">
+            La prioridad de esta tarea es: {task.prioridad2}
+          </div>
         </Card>
       ))}
     </>

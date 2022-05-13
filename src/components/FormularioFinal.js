@@ -12,10 +12,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom"; //
 
 export default function TaskForm() {
-  const [task, setTask] = useState({
-    title: "",
-    description: "",
-    prioridad2: "",
+  const [task2, setTask2] = useState({
+    entero: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -32,17 +30,17 @@ export default function TaskForm() {
 
     if (editing) {
       /* console.log("update"); */
-      await fetch(`http://localhost:4000/tasks/${params.id}`, {
-        method: "PUT",
+      await fetch("http://localhost:4000/tasks2", {
+        method: "POST",
+        body: JSON.stringify(task2),
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(task),
       });
     } else {
-      await fetch("http://localhost:4000/tasks", {
+      await fetch("http://localhost:4000/tasks2", {
         method: "POST",
-        body: JSON.stringify(task),
+        body: JSON.stringify(task2),
         headers: {
           "Content-Type": "application/json",
         },
@@ -50,22 +48,20 @@ export default function TaskForm() {
     }
 
     setLoading(false); // para que se pare el loading
-    navigate("/"); // navega a la ruta raiz
+    navigate("/porcentaje_de_tareas_realizadas"); // navega a la ruta raiz
   };
 
   const handleChange = (e) => {
     /* console.log(e.target.name, e.target.value); */
-    setTask({ ...task, [e.target.name]: e.target.value });
+    setTask2({ ...task2, [e.target.name]: e.target.value });
   };
 
   const loadTask = async () => {
-    const res = await fetch(`http://localhost:4000/tasks/${params.id}`);
+    const res = await fetch(`http://localhost:4000/tasks2/${params.id}`);
     const data = await res.json();
     /* console.log(data); */
-    setTask({
-      title: data.title,
-      description: data.description,
-      prioridad: data.prioridad2,
+    setTask2({
+      entero: data.entero,
     }); // esto me permite que el formulario se rellene con la tarea que se quiere editar
     setEditing(true);
   }; // para cargar una tarea
@@ -89,40 +85,16 @@ export default function TaskForm() {
           style={{ backgroundColor: "#1e272e", padding: "1rem" }}
         >
           <Typography variant="5" textAlign="center" color="white">
-            {editing ? "Edit Task" : "Create Task"}
+            {editing ? "Edit Task" : "Puntua tu progreso"}
           </Typography>
           <CardContent>
             <form onSubmit={handleSubmit}>
               <TextField
                 variant="filled"
-                label="Title"
+                label="Ingrese un numero entre (1-10) para ver su progreso"
                 sx={{ display: "block", margin: ".5rem 0" }}
-                name="title"
-                value={task.title}
-                onChange={handleChange}
-                inputProps={{ style: { color: "white" } }}
-                InputLabelProps={{ style: { color: "white" } }}
-              />
-
-              <TextField
-                variant="filled"
-                label="Descripcion"
-                multiline
-                rows={4}
-                sx={{ display: "block", margin: ".5rem 0" }}
-                name="description"
-                value={task.description}
-                onChange={handleChange}
-                inputProps={{ style: { color: "white" } }}
-                InputLabelProps={{ style: { color: "white" } }}
-              />
-
-              <TextField
-                variant="filled"
-                label="Prioridad (1-10)"
-                sx={{ display: "block", margin: ".5rem 0" }}
-                name="prioridad2"
-                value={task.prioridad2}
+                name="entero"
+                value={task2.entero}
                 onChange={handleChange}
                 inputProps={{ style: { color: "white" } }}
                 InputLabelProps={{ style: { color: "white" } }}
@@ -132,7 +104,7 @@ export default function TaskForm() {
                 variant="contained"
                 color="primary"
                 type="submit"
-                disabled={!task.title || !task.description || !task.prioridad2}
+                disabled={!task2.entero}
               >
                 {" "}
                 {/* si no hay titulo o descripcion no se puede enviar el formulario */}
